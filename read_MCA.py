@@ -50,45 +50,42 @@ if(ser.isOpen()):
         # read data for the set runtime
         runtime = 10 # in seconds
         t = 0
-        while(t <= runtime): # add 5 seconds to take into account the time to start
-            # reset input buffer
-            #ser.reset_input_buffer()
-            # readline (or single byte)
+        while(t <= runtime):
+            # read an entire line of data containing the timestamp and the number of counts in hex format
             serial_string = ser.readline()
-            # translate hex
-            #hex_string = binascii.hexlify(serial_string).decode('ascii')
-            # save in file
-            #temp = int(hex_string,16)
-            #textfile.write(hex_string+"\n")
-            # print to screen
-            #print(int(hex_string,16))
             print(serial_string)
+            # save the data to the output file
             outputfile.write(serial_string.decode('utf-8'))
+            # the REM 500 sends data every second so wait for the new line of data to come
             sleep(1)
             t = t + 1
 
         # stop the run and turn off the source
         ser.write(stop)
         ser.write(check)
+        # dump the channel data
         ser.write(dump)
+
+        # Because the commands sent to the REM 500 are part of the output, usually there is a couple of data lines missing that we need to read now
+        # read all the lines until the command to send the data dump is read
         while (serial_string != dump_read):
             serial_string = ser.readline()
             print(serial_string)
             outputfile.write(serial_string.decode('utf-8'))
+
+        # read the data for each one of the 256 channel and save them in the other output file
         for i in range(256):
             serial_string = ser.readline()
             print(serial_string)
             channelfile.write(serial_string.decode('utf-8'))
-        serial_string = ser.readline()
-        print('remaining: ', serial_string)
+
+        # The line right after the channel dump is supposed to be the number of counts with the timestamp
         serial_string = ser.readline()
         print('remaining: ', serial_string)
     except Exception:
         print("Error: cannot read/write")
 else:
     print("Error: cannont open port")
-
-# Turn off the source and stop the run
 
 
 # close text file
