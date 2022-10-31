@@ -29,6 +29,9 @@ except:
     print("error: port is close")
     exit()
 
+# Enable test mode to turn on the check source at the beginning of the run and turn it off at the end
+test_mode = True
+
 # Available commands to send
 go = 'G'.encode('utf-8') # start the run
 stop = 'S'.encode('utf-8') # stop the run
@@ -45,7 +48,8 @@ if(ser.isOpen()):
         # Reset data and start the run
         ser.write(reset)
         ser.write(go)
-        ser.write(check)
+        if test_mode == True:
+            ser.write(check)
 
         # read data for the set runtime
         runtime = 10 # in seconds
@@ -60,9 +64,10 @@ if(ser.isOpen()):
             sleep(1)
             t = t + 1
 
-        # stop the run and turn off the source
+        # stop the run and turn off the source (if it has been turned on)
         ser.write(stop)
-        ser.write(check)
+        if test_mode == True:
+            ser.write(check)
         # dump the channel data
         ser.write(dump)
 
