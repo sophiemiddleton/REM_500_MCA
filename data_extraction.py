@@ -10,7 +10,7 @@ import csv
 time = []
 counts = []
 
-with open('count_data.txt') as data_file:
+with open('data/count_data.txt') as data_file:
     for line in data_file:
         if len(line) == 16:
             value = int(line[0:6],16)
@@ -19,12 +19,12 @@ with open('count_data.txt') as data_file:
             counts.append(value)
 
 # Export data to csv
-csv_file = open('count_data.csv', 'w')
+csv_file = open('data/count_data.csv', 'w')
 header = ['time', 'counts']
 
 rows = zip(time, counts)
 
-with open('count_data.csv', 'w') as csv_file:
+with open('data/count_data.csv', 'w') as csv_file:
     writer = csv.writer(csv_file)
     writer.writerow(header)
     for row in rows:
@@ -45,13 +45,13 @@ plt.ylabel('Counts')
 
 channel = []
 
-with open('channel_data.txt') as channel_file:
+with open('data/channel_data.txt') as channel_file:
     for line in channel_file:
         channel.append(int(line[0:5]))
 
 QF = []
 
-with open('QF.txt') as QF_file:
+with open('data/QF.txt') as QF_file:
     for line in QF_file:
         QF.append(float(line[0:-1]))
 

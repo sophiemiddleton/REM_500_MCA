@@ -1,25 +1,41 @@
 # Read data coming from the REM 500 Neutron Survey Meter through a RS-232 serial cable
 
 # Authors: Leo Borrel, Sophie Middleton
-# Date: 2022-05-20
+# Date: 2022-10-31
 
 
 import serial
 import binascii
+import math
 from time import sleep
+
+
+# Variables that can be changed in the script
+
+# Enable test mode to turn on the check source at the beginning of the run and turn it off at the end
+test_mode = True
+# total runtime (in seconds)
+runtime = 60 #seconds
+# split time: how often the data are saved in separate files (in seconds)
+split_time = 10 #seconds
+
+
 
 # Set up port
 # ser = serial.Serial('/dev/tty.usbserial-AB0K01H7',9600,timeout=100) # Sophie's Macbook
-ser = serial.Serial('/dev/ttyUSB0',9600,timeout=100) # Leo's laptop (centos)
+ser = serial.Serial('/dev/ttyUSB0',9600,timeout=100) # Leo's laptop (centOS)
 
 ser.bytesize = serial.EIGHTBITS
 ser.parity = serial.PARITY_NONE
 ser.stopbits = serial.STOPBITS_ONE
 
 
-# Create output text files
-outputfile = open("count_data.txt","w")
-channelfile = open("channel_data.txt","w")
+# Create the main output text files
+outputfile = open("data/count_data.txt", "w")
+channelfile = open("data/channel_data.txt", "w")
+
+# Create the multiple output files for the split time
+n_split = math.ceil(runtime / split_time)
 
 # Check if port is open
 try:
@@ -29,8 +45,6 @@ except:
     print("error: port is close")
     exit()
 
-# Enable test mode to turn on the check source at the beginning of the run and turn it off at the end
-test_mode = True
 
 # Available commands to send
 go = 'G'.encode('utf-8') # start the run
@@ -52,17 +66,23 @@ if(ser.isOpen()):
             ser.write(check)
 
         # read data for the set runtime
-        runtime = 10 # in seconds
         t = 0
-        while(t <= runtime):
-            # read an entire line of data containing the timestamp and the number of counts in hex format
-            serial_string = ser.readline()
-            print(serial_string)
-            # save the data to the output file
-            outputfile.write(serial_string.decode('utf-8'))
-            # the REM 500 sends data every second so wait for the new line of data to come
-            sleep(1)
-            t = t + 1
+        split = 1
+        while (t <= runtime):
+            split_filename = "data/count_data_split" + str(split) + ".txt"
+            split_file = open(split_filename, "w")
+            while(t <= split * split_time):
+                # read an entire line of data containing the timestamp and the number of counts in hex format
+                serial_string = ser.readline()
+                print(serial_string)
+                # save the data to the main output file and the split one
+                outputfile.write(serial_string.decode('utf-8'))
+                split_file.write(serial_string.decode('utf-8'))
+                # the REM 500 sends data every second so wait for the new line of data to come
+                sleep(1)
+                t = t + 1
+            split_file.close()
+            split = split + 1
 
         # stop the run and turn off the source (if it has been turned on)
         ser.write(stop)
@@ -87,8 +107,8 @@ if(ser.isOpen()):
         # The line right after the channel dump is supposed to be the number of counts with the timestamp
         serial_string = ser.readline()
         print('remaining: ', serial_string)
-    except Exception:
-        print("Error: cannot read/write")
+    except Exception as err:
+        print("Error: cannot read/write:", err)
 else:
     print("Error: cannont open port")
 

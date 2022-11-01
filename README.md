@@ -11,8 +11,10 @@ Python interface with REM 500 Neutron Survey Meter MCA through RS-232 serial por
 # Step by step use
 
 1. Put the REM 500 Neutron Survey Meter in MCA mode:
-- Push the 'on' button
-- Push the 'next' button twice 
+- Push the `ON/OFF` button
+- Push the `MODE` button
+- Push the `RESET` button twice (which correspond to `NEXT` in this menu)
+- Push the `ALT` button to access the `MCA` mode
 
 
 2. Change the runtime or the commands you want to send to the REM 500 directly in the file `read_MCA.py`
