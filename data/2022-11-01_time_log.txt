@@ -1,0 +1,41 @@
+2022-11-01
+DT generator acceptance test time log
+
+- 8:32: everything is ready to go
+
+- 8:42: SF6 pressure: 111.9 psi
+
+- 8:49: first try powering on ; aiming at 40 kV operating voltage (RF frequency: 16.7 ; gas pressure: 1.68) ; not working: trip when voltage reaches around 10 kV (trip set up to happen when current > 0.3 mA)
+
+Table of first 10 tries to reach 40 kV
+try # | max operating voltage reached | max current reached
+2nd try | ~10 kV   | ~0.28 mA
+3rd try | ~10.6 kV | 0.2747 mA
+4th try | 10.23 kV | 0.2643 mA
+5th try | 13.83 kV | 0.2714 mA (state on for 4 seconds when it passes 10 kV)
+6th try | 18.99 kV | 0.2803 mA
+7th try | 23.57 kV | 0.25 mA
+8th try | 27.6 kV  | 0.2911 mA
+9th try | 31.38 kV | 0.2685 mA
+
+- 9:10: 10th try stabilized at 40 kV operating voltage 0.095 mA current ; neutron on for 6:38 min ; peak voltage around 50 kV before stabilization
+
+- 9:25: move neutron detector at the bottom of the trench ; stabilized at 40 kV and 0.086 mA ; fault: microcontroller interrupted because of electrical transient
+
+- 9:37: stabilized at 40 kV and 0.071 mA ; neutron on for 9:01 min
+
+- 9:48: move neutron detector at the top of the trench ; stabilized at 40 kV and 0.0645 mA ; neutron on for 8:48 min (SF pressure at 117.6 psi)
+
+- 10:02: move neutron detector at the top of the pipe chase ; stabilized at 60 kV and 0.115 mA ; neutron on for 7:49 min (SF pressure and sensor temperature at NaN)
+
+- 10:14: stabilized at 80 kV and 0.1 mA ; neutron on for 7:50 min
+
+- 10:25: try to reach 100 kV ; goes from state 'on' to 'off' to 'standby' and back 'on' ; trips every ~2 min and stabilizes at 10 kV and 0.14 mA ; max radiation measured at 2.08e-2 mrem for a 10 min integration time
+
+- 10:36: lower to 80 kV ; trips after 5:54 min and again at 8:02 min : microcontroller interrupted because of electrical transient
+
+- lunch break ; let the generator cool down (sensor temperature around 40 C)
+
+- 13:06: power back on ; sensor temperature at 25 C and SF6 pressure at 115.4 psi
+
+during the afternoon tries, trips down after less than 1 min of neutron on ; reduced voltage to 40 kV and still the same
