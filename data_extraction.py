@@ -10,7 +10,9 @@ import csv
 time = []
 counts = []
 
-with open('data/count_data.txt') as data_file:
+file_pre = "data/1318_80kV_3_10min/"
+
+with open(file_pre + "count_data.txt") as data_file:
     for line in data_file:
         if len(line) == 16:
             value = int(line[0:6],16)
@@ -19,12 +21,12 @@ with open('data/count_data.txt') as data_file:
             counts.append(value)
 
 # Export data to csv
-csv_file = open('data/count_data.csv', 'w')
+csv_file = open(file_pre + "count_data.csv", 'w')
 header = ['time', 'counts']
 
 rows = zip(time, counts)
 
-with open('data/count_data.csv', 'w') as csv_file:
+with open(file_pre + "count_data.csv", 'w') as csv_file:
     writer = csv.writer(csv_file)
     writer.writerow(header)
     for row in rows:
@@ -45,7 +47,7 @@ plt.ylabel('Counts')
 
 channel = []
 
-with open('data/channel_data.txt') as channel_file:
+with open(file_pre + "channel_data.txt") as channel_file:
     for line in channel_file:
         channel.append(int(line[0:5]))
 
