@@ -13,7 +13,7 @@ from time import sleep
 # Variables that can be changed in the script
 
 # Enable test mode to turn on the check source at the beginning of the run and turn it off at the end
-test_mode = True
+test_mode = False
 # total runtime (in seconds)
 runtime = 600 #seconds
 # split time: how often the data are saved in separate files (in seconds)
@@ -108,23 +108,23 @@ if(ser.isOpen()):
         serial_string = ser.readline()
         print('remaining: ', serial_string)
 
-#    except KeyboardInterrupt:
-#        ser.write(stop)
-#        if test_mode == True:
-#            ser.write(check)
-#            ser.write(dump)
-#            #serial_string = ser.readline()
-#        while (serial_string != dump_read):
-#            serial_string = ser.readline()
-#            print(serial_string)
-#            outputfile.write(serial_string.decode('utf-8'))
-#
-#        for i in range(256):
-#            serial_string = ser.readline()
-#            print(serial_string)
-#            channelfile.write(serial_string.decode('utf-8'))
-#
-#        print("keyboard interrupt")
+    except KeyboardInterrupt:
+        ser.write(stop)
+        if test_mode == True:
+            ser.write(check)
+            ser.write(dump)
+            #serial_string = ser.readline()
+        while (serial_string != dump_read):
+            serial_string = ser.readline()
+            print(serial_string)
+            outputfile.write(serial_string.decode('utf-8'))
+
+        for i in range(256):
+            serial_string = ser.readline()
+            print(serial_string)
+            channelfile.write(serial_string.decode('utf-8'))
+
+        print("keyboard interrupt")
 
     except Exception as err:
         print("Error: cannot read/write:", err)

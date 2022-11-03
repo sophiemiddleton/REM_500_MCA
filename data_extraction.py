@@ -10,7 +10,9 @@ import csv
 time = []
 counts = []
 
-file_pre = "data/1318_80kV_3_10min/"
+#file_pre = "data/1002_60kV_1_10min/"
+#file_pre = "data/1108_80kV_2_10min/"
+file_pre = "data/2022-11-03/1028_80kV_1.71gas_0-10min/"
 
 with open(file_pre + "count_data.txt") as data_file:
     for line in data_file:
@@ -65,12 +67,19 @@ rem = 0
 for i in range(5,255):
     rem += 100 * i * channel[i] * QF[i] / 20
 
-# divide by runtime
+# divide by runtime (in seconds) because the formula works for 1 sec integration
 rad = rad / time[-1]
 rem = rem / time[-1]
 
 print('rad: ', rad, ' urad/h')
 print('rem: ', rem, ' urem/h')
+
+# multiply by runtime (in hour)
+rad = rad * (time[-1] / 3600)
+rem = rem * (time[-1] / 3600)
+
+print('rad: ', rad, ' urad')
+print('rem: ', rem, ' urem')
 
 # plot
 
