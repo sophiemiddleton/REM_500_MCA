@@ -1,0 +1,18 @@
+Log: https://docs.google.com/spreadsheets/d/1lXuEUTKlvncwd6B5w7dj_1ZfRKU99pMN8dtz28nOWpw/edit#gid=822878622
+
+Full power off
+Run1 - 40kV, 10mins
+Run2 - 80kV, 10 mins
+Run3 - 100kV,10mins, RF plays, no change in current
+Full power off
+Run4 - 120kV,10mins
+Run5 - void because I was presenting in the meeting
+Run6 - 120kV no interuptions
+Run7 - 120kV, 10mins, RF plays, no obvious change in current
+
+Jose’s numbers suggest that during the 100kV the reading was 0.082 and at 120kV between 0.121 - 0.132 suggesting some differences which we didnt see previously other runs:
+
+40kV -0.000189
+90kV-0.0352
+100kV-0.082
+120kV-0.124,0.132,0.128 (3 runs)

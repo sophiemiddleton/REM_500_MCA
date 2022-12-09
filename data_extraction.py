@@ -6,15 +6,18 @@
 
 import matplotlib.pyplot as plt
 import csv
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("--run", help="run number")
+parser.add_argument("--date", help="date")
+args = parser.parse_args()
 
 time = []
 counts = []
 
-#file_pre = "data/1002_60kV_1_10min/"
-#file_pre = "data/1108_80kV_2_10min/"
-file_pre = "data/2022-11-03/1028_80kV_1.71gas_0-10min/"
+folder = "data/"+str(args.date)+"/run"+str(args.run)+"/"
 
-with open(file_pre + "count_data.txt") as data_file:
+with open(folder + "count_data.txt") as data_file:
     for line in data_file:
         if len(line) == 16:
             value = int(line[0:6],16)
@@ -23,12 +26,12 @@ with open(file_pre + "count_data.txt") as data_file:
             counts.append(value)
 
 # Export data to csv
-csv_file = open(file_pre + "count_data.csv", 'w')
+csv_file = open(folder + "count_data.csv", 'w')
 header = ['time', 'counts']
 
 rows = zip(time, counts)
 
-with open(file_pre + "count_data.csv", 'w') as csv_file:
+with open(folder + "count_data.csv", 'w') as csv_file:
     writer = csv.writer(csv_file)
     writer.writerow(header)
     for row in rows:
@@ -49,7 +52,7 @@ plt.ylabel('Counts')
 
 channel = []
 
-with open(file_pre + "channel_data.txt") as channel_file:
+with open(folder + "channel_data.txt") as channel_file:
     for line in channel_file:
         channel.append(int(line[0:5]))
 
@@ -92,4 +95,3 @@ plt.ylabel('count')
 
 
 plt.show()
-
