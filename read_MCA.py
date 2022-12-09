@@ -7,6 +7,11 @@
 import serial
 import binascii
 import math
+import subprocess
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("--run", help="run number")
+args = parser.parse_args()
 from time import sleep
 
 
@@ -19,11 +24,15 @@ runtime = 600 #seconds
 # split time: how often the data are saved in separate files (in seconds)
 split_time = 60 #seconds
 
+run_number = args.run
+date = "2022-12-08"
 
+subprocess.Popen(["mkdir","data/2022-12-08"])
+subprocess.Popen(["mkdir","data/2022-12-08/run"+str(run_number)])
 
 # Set up port
-# ser = serial.Serial('/dev/tty.usbserial-AB0K01H7',9600,timeout=100) # Sophie's Macbook
-ser = serial.Serial('/dev/ttyUSB0',9600,timeout=100) # Leo's laptop (centOS)
+ser = serial.Serial('/dev/tty.usbserial-AB0K01H7',9600,timeout=100) # Sophie's Macbook
+#ser = serial.Serial('/dev/ttyUSB0',9600,timeout=100) # Leo's laptop (centOS)
 
 ser.bytesize = serial.EIGHTBITS
 ser.parity = serial.PARITY_NONE
@@ -31,8 +40,8 @@ ser.stopbits = serial.STOPBITS_ONE
 
 
 # Create the main output text files
-outputfile = open("data/count_data.txt", "w")
-channelfile = open("data/channel_data.txt", "w")
+outputfile = open("data/2022-12-08/run"+str(run_number)+"/count_data.txt", "w")
+channelfile = open("data/2022-12-08/run"+str(run_number)+"/channel_data.txt", "w")
 
 # Create the multiple output files for the split time
 n_split = math.ceil(runtime / split_time)
@@ -69,7 +78,7 @@ if(ser.isOpen()):
         t = 0
         split = 1
         while (t <= runtime):
-            split_filename = "data/count_data_split" + str(split) + ".txt"
+            split_filename = "data/2022-12-08/run"+str(run_number)+"/count_data_split" + str(split) + ".txt"
             split_file = open(split_filename, "w")
             while(t <= split * split_time):
                 # read an entire line of data containing the timestamp and the number of counts in hex format
